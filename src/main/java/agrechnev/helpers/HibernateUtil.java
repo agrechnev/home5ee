@@ -12,7 +12,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class HibernateUtil {
     private static HibernateUtil instance;  // Class instance
 
-    private final SessionFactory sessionFactory;
+    private StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
+
+    private SessionFactory sessionFactory=null;
 
     public static HibernateUtil getInstance() {
 
@@ -25,27 +27,24 @@ public class HibernateUtil {
 
     /**
      * Get the session factory field
+     *
      * @return The Session factory
      */
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
-
-
-
-
     private HibernateUtil() {
+        createSessionFactory();
+    }
 
+    private void createSessionFactory() {
         // Create the hibernate session factory
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
-
         try {
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Throwable e) {
-            StandardServiceRegistryBuilder.destroy( registry );
+            StandardServiceRegistryBuilder.destroy(registry);
             throw new ExceptionInInitializerError(e);
         }
-
     }
 }

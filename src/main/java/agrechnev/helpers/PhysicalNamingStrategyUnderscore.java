@@ -16,7 +16,7 @@ public class PhysicalNamingStrategyUnderscore extends PhysicalNamingStrategyStan
 
     @Override
     public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
-        return new Identifier(name.getText().toUpperCase().concat("S"),name.isQuoted());
+        return new Identifier(name.getText().toUpperCase().concat("S"), name.isQuoted());
     }
 
     @Override
@@ -34,8 +34,8 @@ public class PhysicalNamingStrategyUnderscore extends PhysicalNamingStrategyStan
         for (int i = 1; i < result.length() - 1; i++) {
             if (Character.isLowerCase(result.charAt(i - 1)) &&
                     Character.isUpperCase(result.charAt(i)) &&
-                    Character.isLowerCase(result.charAt(i+1))) {
-                result.insert(i,'_');
+                    Character.isLowerCase(result.charAt(i + 1))) {
+                result.insert(i, '_');
             }
         }
 

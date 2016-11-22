@@ -19,7 +19,13 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>5.2.3.Final</version>
+      <version>5.2.4.Final</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jpamodelgen</artifactId>
+      <version>5.2.4.Final</version>
     </dependency>
 
 
@@ -49,8 +55,12 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+          <compilerArguments>
+            <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+          </compilerArguments>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
 </project>

@@ -22,7 +22,7 @@ public final class Customer implements ShortPrintable<Customer> {
 
     // Links to one
     @ManyToOne
-    @JoinColumn(name="custRep")
+    @JoinColumn(name = "custRep")
     private Salesrep custRep;
 
 
@@ -32,6 +32,7 @@ public final class Customer implements ShortPrintable<Customer> {
 
     /**
      * Note that toString uses toShortString()-based printCollection to avoid infinite recursion
+     *
      * @return
      */
     @Override
@@ -118,7 +119,6 @@ public final class Customer implements ShortPrintable<Customer> {
     public void setCustRep(Salesrep custRep) {
         this.custRep = custRep;
     }
-
 
 
     public Set<Order> getOrders() {

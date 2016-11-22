@@ -1,8 +1,12 @@
 package agrechnev.models;
 
-import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.NamedNativeQuery;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +31,7 @@ public final class Office implements ShortPrintable<Office> {
 
     // Links to one
     @ManyToOne
-    @JoinColumn(name="mgr")
+    @JoinColumn(name = "mgr")
     private Salesrep mgr;
 
     // Links to Many
@@ -55,7 +59,7 @@ public final class Office implements ShortPrintable<Office> {
      */
     public String toShortString() {
         return "{" + getOffice() + ", " + getCity() +
-                ", " + getRegion() + ", " + getTarget() +", " + getSales() + '}';
+                ", " + getRegion() + ", " + getTarget() + ", " + getSales() + '}';
     }
 
     //-----------------------------------------------------------------

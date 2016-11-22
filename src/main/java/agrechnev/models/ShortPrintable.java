@@ -31,7 +31,7 @@ public interface ShortPrintable<T> extends Comparable<T> {
 
     static String printCollection(Collection<? extends ShortPrintable<?>> collection) {
 
-        if (collection == null || collection.size()==0) {
+        if (collection == null || collection.size() == 0) {
             return "[]"; // Nothing to do
         }
 

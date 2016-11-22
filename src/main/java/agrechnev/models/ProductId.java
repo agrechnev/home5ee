@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Oleksiy Grechnyev on 10/31/2016.
  * The compound Id class for Product entity
  */
-public class ProductId implements Serializable{
+public class ProductId implements Serializable {
     protected String mfrId;
     protected String productId;
 
