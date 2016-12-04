@@ -14,7 +14,7 @@ public class HibernateUtil {
 
     private StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
 
-    private SessionFactory sessionFactory=null;
+    private SessionFactory sessionFactory = null;
 
     public static HibernateUtil getInstance() {
 

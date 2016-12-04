@@ -2,8 +2,7 @@ package agrechnev.main;
 
 import agrechnev.helpers.HibernateUtil;
 import agrechnev.helpers.Util;
-import agrechnev.models.Office;
-import agrechnev.models.Office_;
+import agrechnev.models.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -15,10 +14,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
+
+import static javafx.scene.input.KeyCode.O;
 
 /**
  * Created by Oleksiy Grechnyev on 10/29/2016.
- * main() method to have fun with hibernate
+ * main() method for fun with hibernate queries
  */
 public class Main {
     public static void main(String[] args) {
@@ -28,30 +30,41 @@ public class Main {
         try (SessionFactory sessionFactory = HibernateUtil.getInstance().getSessionFactory();
              Session session = sessionFactory.openSession()) {
 
-            // Let us get all customers
             session.beginTransaction();
-
-
-//            List<Customer> customerList = (List<Customer>) session.createQuery("from Customer").list();
-//            customerList.forEach(System.out::println);
 
             List<?> list;
 
             // The HQL query
-            String query = "select o, c " +
-                    " from Order o join o.cust c";
+            String query = "select o.city, sum(s.quota), sum(s.sales) " +
+                    "from Office o, Salesrep s where s.repOffice=o " +
+                    "group by o.city having count(*)>=2  order by o.city";
 
-            list = session.createQuery(query).getResultList();
+//            list = session.createQuery(query).getResultList();
 
             // The criteria query
             CriteriaBuilder builder = HibernateUtil.getInstance().getSessionFactory().getCriteriaBuilder();
 
 
             CriteriaQuery<Object[]> criteria = builder.createQuery(Object[].class);
-            Root<Office> root = criteria.from(Office.class);
+
+            Root<Office> o = criteria.from(Office.class);
+            Root<Salesrep> s = criteria.from(Salesrep.class);
+
+            // A somewhat ugly way to make count(*) but it seems to work
+            // count(o) or count(o.get(Office_.city)) would give the same result
+            Root<?> asterick = criteria.getRoots().iterator().next();
+
+            criteria.multiselect(
+                    o.get(Office_.city),
+                    builder.sum(s.get(Salesrep_.quota)),
+                    builder.sum(s.get(Salesrep_.sales)))
+                    .where(builder.equal(s.get(Salesrep_.repOffice), o))
+                    .groupBy(o.get(Office_.city))
+                    .having(builder.ge(builder.count(asterick), 2))
+                    .orderBy(builder.asc(o.get(Office_.city)));
 
 
-//            list = session.createQuery(criteria).getResultList();
+            list = session.createQuery(criteria).getResultList();
 
             // Print each row while handling arrays correctly
             List<String> stringList = Util.listToStringList(list);
